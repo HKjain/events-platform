@@ -52,7 +52,7 @@ function Profile() {
 
   return (
     <div className="p-3 rounded-lg">
-      <div className="bg-white h-96 sm:h-[75vh] overflow-scroll shadow-2xl sm:w-npm run dev[95%] mx-auto grid grid-cols-1 gap-2 divide-indigo-700 divide-y-4 md:divide-y-0 md:divide-x-4 md:grid-cols-2 p-3 text-gray-900 rounded-lg">
+      <div className="bg-white h-96 sm:h-[75vh] overflow-scroll shadow-2xl sm:w-[96%] mx-auto grid grid-cols-1 gap-2 divide-indigo-700 divide-y-4 md:divide-y-0 md:divide-x-4 md:grid-cols-2 p-3 text-gray-900 rounded-lg">
         <div className="flex flex-col pl-1 pt-1 pb-1">
           <h1 className="font-montserrat">Personal Information</h1>
 

@@ -88,10 +88,80 @@ const upcomingEvents = [
   },
 ];
 
+const registeredEvents = [
+  {
+    eventId: 1,
+    eventName: 'Inferno',
+    institute: 'National Institute of Technology Karnataka',
+    startDate: '2021-01-26',
+    endDate: '2021-01-28',
+  },
+  {
+    eventId: 2,
+    eventName: 'Inferno',
+    institute: 'National Institute of Technology Karnataka',
+    startDate: '2021-12-30',
+    endDate: '2022-01-01',
+  },
+  {
+    eventId: 3,
+    eventName: 'Inferno',
+    institute: 'National Institute of Technology Karnataka',
+    startDate: '2021-12-28',
+    endDate: '2021-12-30',
+  },
+  {
+    eventId: 4,
+    eventName: 'Inferno',
+    institute: 'National Institute of Technology Karnataka',
+    startDate: '2021-01-26',
+    endDate: '2021-01-26',
+  },
+  {
+    eventId: 5,
+    eventName: 'Inferno',
+    institute: 'National Institute of Technology Karnataka',
+    startDate: '2021-01-26',
+    endDate: '2021-01-26',
+  },
+  {
+    eventId: 6,
+    eventName: 'Inferno',
+    institute: 'National Institute of Technology Karnataka',
+    startDate: '2021-01-26',
+    endDate: '2021-01-26',
+  },
+  {
+    eventId: 7,
+    eventName: 'Inferno',
+    institute: 'National Institute of Technology Karnataka',
+    startDate: '2021-01-26',
+    endDate: '2021-01-26',
+  },
+  {
+    eventId: 8,
+    eventName: 'Inferno',
+    institute: 'National Institute of Technology Karnataka',
+    startDate: '2021-01-26',
+    endDate: '2021-01-26',
+  },
+  {
+    eventId: 9,
+    eventName: 'Inferno',
+    institute: 'National Institute of Technology Karnataka',
+    startDate: '2021-01-26',
+    endDate: '2021-01-26',
+  },
+];
+
 export function getOngoingEvents() {
   return ongoingEvents;
 }
 
 export function getUpcomingEvents() {
   return upcomingEvents;
+}
+
+export function getRegisteredEvents(userId) {
+  return registeredEvents;
 }
