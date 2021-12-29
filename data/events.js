@@ -211,6 +211,72 @@ const listedEvents = [
   },
 ];
 
+const registeredStudents = [
+  {
+    id: 1,
+    first_name: 'Harsh',
+    last_name: 'Jain',
+    event_name: 'Inferno',
+    email: 'harshkawadia8.hk@gmail.com',
+    institute: 'National Institute of Technology Karnataka',
+    registration_date: '2021-01-26',
+  },
+  {
+    id: 2,
+    first_name: 'Mukesh',
+    last_name: 'Patel',
+    event_name: 'Inferno',
+    email: 'mukesh@gmail.com',
+    institute: 'National Institute of Technology Karnataka',
+    registration_date: '2021-01-28',
+  },
+  {
+    id: 3,
+    first_name: 'Vishal',
+    last_name: 'Gupta',
+    event_name: 'Inferno',
+    email: 'vishal@gmail.com',
+    institute: 'National Institute of Technology Karnataka',
+    registration_date: '2021-01-26',
+  },
+  {
+    id: 4,
+    first_name: 'Shivam',
+    last_name: 'Verma',
+    event_name: 'Inferno',
+    email: 'shivamV@gmail.com',
+    institute: 'National Institute of Technology Karnataka',
+    registration_date: '2021-03-26',
+  },
+  {
+    id: 5,
+    first_name: 'Himank',
+    last_name: 'Pathak',
+    event_name: 'Inferno',
+    email: 'himank@gmail.com',
+    institute: 'National Institute of Technology Karnataka',
+    registration_date: '2021-01-26',
+  },
+  {
+    id: 6,
+    first_name: 'Lakshay',
+    last_name: 'Patel',
+    event_name: 'Inferno',
+    email: 'lakshay@gmail.com',
+    institute: 'National Institute of Technology Karnataka',
+    registration_date: '2021-01-26',
+  },
+  {
+    id: 7,
+    first_name: 'Raushan',
+    last_name: 'Kumar',
+    event_name: 'Inferno',
+    email: 'raushan@gmail.com',
+    institute: 'National Institute of Technology Karnataka',
+    registration_date: '2021-02-26',
+  },
+];
+
 export function getOngoingEvents() {
   return ongoingEvents;
 }
@@ -225,4 +291,8 @@ export function getRegisteredEvents(userId) {
 
 export function getListedEvents(nit_id) {
   return listedEvents;
+}
+
+export function getRegisteredStudents(eventId) {
+  return registeredStudents;
 }
