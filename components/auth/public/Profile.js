@@ -1,6 +1,4 @@
 import React from 'react';
-import BadgeIcon from '@mui/icons-material/Badge';
-import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
 
 function Profile() {
   const institutes = [
@@ -141,7 +139,7 @@ function Profile() {
             <div className="flex gap-1 mt-2 sm:mt-0 bg-indigo-500 shadow-xl px-2 py-2 rounded-xl">
               <div className="grow">
                 <h6 className="text-xs font-semibold text-zinc-200 mb-1">
-                  Gender
+                  State
                 </h6>
                 <select
                   name="state"
@@ -220,7 +218,7 @@ function Profile() {
         </div>
 
         {/*  */}
-        <div className="flex flex-col pl-1 pt-1">
+        <div className="flex flex-col pl-1 sm:pl-2 pt-1">
           <h1 className="font-montserrat">Educational Information</h1>
           {/* Institute */}
           <div className="flex gap-1 mt-2 bg-indigo-500 shadow-xl px-2 py-2 rounded-xl">
@@ -299,7 +297,7 @@ function Profile() {
             <div className="flex gap-1 mt-2 sm:mt-0 bg-indigo-500 shadow-xl px-2 py-2 rounded-xl">
               <div className="grow">
                 <h6 className="text-xs font-semibold text-zinc-200 mb-1">
-                  Roll Number / Registration Number
+                  Roll / Registration Number
                 </h6>
                 <input
                   className="w-full placeholder:hidden border-0 focus-visible:bg-indigo-500 text-white text-sm font-bold focus-within:bg-indigo-500 outline-none bg-indigo-500"

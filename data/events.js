@@ -154,6 +154,63 @@ const registeredEvents = [
   },
 ];
 
+const listedEvents = [
+  {
+    eventId: 1,
+    eventName: 'Inferno',
+    startDate: '2021-01-26',
+    endDate: '2021-01-28',
+  },
+  {
+    eventId: 2,
+    eventName: 'Inferno',
+    startDate: '2021-12-30',
+    endDate: '2022-01-01',
+  },
+  {
+    eventId: 3,
+    eventName: 'Inferno',
+    startDate: '2021-12-28',
+    endDate: '2021-12-30',
+  },
+  {
+    eventId: 4,
+    eventName: 'Inferno',
+    startDate: '2021-01-26',
+    endDate: '2021-01-26',
+  },
+  {
+    eventId: 5,
+    eventName: 'Inferno',
+    startDate: '2021-01-26',
+    endDate: '2021-01-26',
+  },
+  {
+    eventId: 6,
+    eventName: 'Inferno',
+    startDate: '2021-01-26',
+    endDate: '2021-01-26',
+  },
+  {
+    eventId: 7,
+    eventName: 'Inferno',
+    startDate: '2021-01-26',
+    endDate: '2021-01-26',
+  },
+  {
+    eventId: 8,
+    eventName: 'Inferno',
+    startDate: '2021-01-26',
+    endDate: '2021-01-26',
+  },
+  {
+    eventId: 9,
+    eventName: 'Inferno',
+    startDate: '2021-01-26',
+    endDate: '2021-01-26',
+  },
+];
+
 export function getOngoingEvents() {
   return ongoingEvents;
 }
@@ -164,4 +221,8 @@ export function getUpcomingEvents() {
 
 export function getRegisteredEvents(userId) {
   return registeredEvents;
+}
+
+export function getListedEvents(nit_id) {
+  return listedEvents;
 }

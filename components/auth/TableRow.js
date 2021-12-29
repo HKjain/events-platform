@@ -15,7 +15,7 @@ const month = [
   'Dec',
 ];
 
-function TableRow({ event, index }) {
+function TableRow({ event, index, showInstitute }) {
   const today = Date.now();
 
   const startDate = new Date(event.startDate);
@@ -59,7 +59,7 @@ function TableRow({ event, index }) {
     <tr key={event.eventId}>
       <th>{index + 1}</th>
       <td>{event.eventName}</td>
-      <td>{event.institute}</td>
+      {showInstitute && <td>{event.institute}</td>}
       <td>{readableStart}</td>
       <td>{readableEnd}</td>
       <td>

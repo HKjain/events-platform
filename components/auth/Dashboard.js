@@ -1,18 +1,12 @@
 import React, { useState } from 'react';
-import RegisteredEvents from './RegisteredEvents';
-import Profile from './Profile';
-import MenuIcon from '../../icons/MenuIcon';
+import MenuIcon from '../icons/MenuIcon';
 
-function Dashboard() {
-  const menuItems = [
-    { id: 1, name: 'Profile', slug: 'profile' },
-    { id: 2, name: 'Registered Events', slug: 'registered_events' },
-  ];
-
-  const [selectedMenu, setSelectedMenu] = useState('profile');
+function Dashboard({ menuItems }) {
+  const [selectedMenu, setSelectedMenu] = useState(menuItems[0]);
 
   const handleChange = (slug) => {
-    setSelectedMenu(slug);
+    const item = menuItems.filter((menu) => slug === menu.slug);
+    setSelectedMenu(item[0]);
   };
 
   return (
@@ -21,8 +15,7 @@ function Dashboard() {
         <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
         <div className="flex flex-col items-center bg-white justify-center drawer-content">
           <div className="w-full rounded-lg bg-white">
-            {selectedMenu === 'profile' && <Profile />}
-            {selectedMenu === 'registered_events' && <RegisteredEvents />}
+            {selectedMenu.component}
           </div>
         </div>
         <div className="drawer-side bg-indigo-600">
@@ -31,7 +24,7 @@ function Dashboard() {
             {menuItems.map((menu) => (
               <li
                 className={`rounded-xl hover:scale-105 transition-all ease-in-out hover:bg-indigo-400 cursor-pointer my-1 p-3 text-white ${
-                  selectedMenu === menu.slug ? 'bg-indigo-500' : ''
+                  selectedMenu.slug === menu.slug ? 'bg-indigo-500' : ''
                 }`}
                 key={menu.id}
                 onClick={() => handleChange(menu.slug)}
