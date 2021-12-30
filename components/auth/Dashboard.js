@@ -19,7 +19,7 @@ function Dashboard({ menuItems }) {
           </div>
         </div>
         <div className="drawer-side bg-indigo-600">
-          <label for="my-drawer-2" className="drawer-overlay z-10"></label>
+          <label htmlFor="my-drawer-2" className="drawer-overlay z-10"></label>
           <ul className="flex flex-col overflow-hidden p-4 overflow-y-auto w-64 md:w-80 justify-center text-base-content">
             {menuItems.map((menu) => (
               <li
@@ -36,7 +36,7 @@ function Dashboard({ menuItems }) {
         </div>
       </div>
       <label
-        for="my-drawer-2"
+        htmlFor="my-drawer-2"
         className="mb-4 absolute p-0 px-3 top-2 right-8 btn btn-primary drawer-button lg:hidden"
       >
         <MenuIcon className="w-5" />
