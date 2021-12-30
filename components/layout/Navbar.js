@@ -17,6 +17,7 @@ function Navbar() {
     { id: 4, url: '/contact', title: 'Contact' },
     { id: 3, url: '/auth/public', title: 'Dashboard' },
     { id: 5, url: '/auth/institute', title: 'Institute' },
+    { id: 6, url: '/auth/admin/dashboard', title: 'Admin' },
   ];
 
   return (
