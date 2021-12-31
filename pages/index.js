@@ -20,7 +20,6 @@ export default function Home() {
 
       {/* Hero Section */}
       <Hero />
-
       {/* Ongoing Events */}
       <Carousel
         key="ongoing_events"

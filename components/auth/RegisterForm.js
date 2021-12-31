@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
@@ -63,14 +63,40 @@ function RegisterForm() {
   const handleUserType = (newType) => {
     setUserType(newType);
   };
+
+  const firstNameRef = useRef(null);
+  const instituteRef = useRef(null);
+  const lastNameRef = useRef(null);
+  const emailRef = useRef(null);
+  const passwordRef = useRef(null);
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+    let form_data = {
+      email: emailRef.current.value,
+      password: passwordRef.current.value,
+    };
+    if (userType === 'student') {
+      form_data.first_name = firstNameRef.current.value;
+      form_data.last_name = lastNameRef.current.value;
+      form_data.is_student = true;
+      form_data.is_institute = false;
+    } else {
+      form_data.institute = instituteRef.current.value;
+      form_data.is_student = false;
+      form_data.is_institute = true;
+    }
+    console.log(form_data);
+  };
+
   return (
-    <div className="flex flex-col w-full mt-3 pl-2">
+    <form onSubmit={submitHandler} className="flex flex-col w-full mt-3 pl-2">
       {/* user Type */}
       <div className="flex gap-5 mb-2 w-72 sm:w-96 px-2 py-2 ">
         <div className=" flex justify-center items-center gap-2">
           <input
             type="radio"
-            onClick={() => handleUserType('student')}
+            onChange={() => handleUserType('student')}
             className="radio border-white radio-xs checked:bg-indigo-600 m-0"
             id="student"
             name="user_type"
@@ -87,7 +113,7 @@ function RegisterForm() {
         <div className="flex justify-center items-center gap-2">
           <input
             type="radio"
-            onClick={() => handleUserType('institute')}
+            onChange={() => handleUserType('institute')}
             className="radio border-white  radio-xs checked:bg-indigo-600"
             id="institute"
             name="user_type"
@@ -113,10 +139,12 @@ function RegisterForm() {
 
             <select
               name="institute"
+              ref={instituteRef}
               id="institute_filter"
+              required={userType === 'institute' ? true : false}
               className="w-full placeholder:hidden border-0 focus-visible:bg-indigo-500 text-white text-sm font-bold focus-within:bg-indigo-500 outline-none bg-indigo-500"
             >
-              <option disabled className="bg-white text-indigo-600">
+              <option disabled selected className="bg-white text-indigo-600">
                 Select Institute
               </option>
               {institutes.map((institute) => (
@@ -144,7 +172,9 @@ function RegisterForm() {
               <input
                 className="w-full placeholder:hidden border-0 focus-visible:bg-indigo-500 text-white text-sm font-bold focus-within:bg-indigo-500 outline-none bg-indigo-500"
                 type="text"
+                ref={firstNameRef}
                 name="first_name"
+                required={userType === 'student' ? true : false}
                 id="first_name"
               />
             </div>
@@ -161,6 +191,8 @@ function RegisterForm() {
               <input
                 className="w-full placeholder:hidden border-0 focus-visible:bg-indigo-500 text-white text-sm font-bold focus-within:bg-indigo-500 outline-none bg-indigo-500"
                 type="text"
+                required={userType === 'student' ? true : false}
+                ref={lastNameRef}
                 name="last_name"
                 id="last_name"
               />
@@ -181,6 +213,8 @@ function RegisterForm() {
           <input
             className="w-full placeholder:hidden border-0 focus-visible:bg-indigo-500 text-white text-sm font-bold focus-within:bg-indigo-500 outline-none bg-indigo-500"
             type="text"
+            required
+            ref={emailRef}
             name="email"
             id="email"
           />
@@ -197,6 +231,8 @@ function RegisterForm() {
             className="w-full placeholder:hidden border-0 focus-visible:bg-indigo-500 text-white text-sm font-bold focus-within:bg-indigo-500 outline-none bg-indigo-500"
             type={passwordType}
             name="password"
+            required
+            ref={passwordRef}
             id="password"
           />
         </div>
@@ -217,11 +253,14 @@ function RegisterForm() {
       </div>
       {/* Login Button */}
       <div className="mt-4 w-36 sm:w-48 rounded-3xl shadow-2xl">
-        <button className="bg-indigo-400 w-full sm:py-3 hover:scale-95 hover:drop-shadow-2xl hover:bg-white hover:text-indigo-500 transition-all duration-500 ease-in-out border-0 outline-none tracking-widest rounded-3xl text-center font-semibold px-5 py-2 uppercase text-white">
+        <button
+          type="submit"
+          className="bg-indigo-400 w-full sm:py-3 hover:scale-95 hover:drop-shadow-2xl hover:bg-white hover:text-indigo-500 transition-all duration-500 ease-in-out border-0 outline-none tracking-widest rounded-3xl text-center font-semibold px-5 py-2 uppercase text-white"
+        >
           Register
         </button>
       </div>
-    </div>
+    </form>
   );
 }
 

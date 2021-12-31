@@ -2,7 +2,7 @@ import React from 'react';
 
 function BackgroundSVG() {
   return (
-    <div class="custom-shape-divider-top-1640545095">
+    <div className="custom-shape-divider-top-1640545095">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 1200 120"
