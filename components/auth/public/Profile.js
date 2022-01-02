@@ -1,55 +1,52 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { getStates } from '../../../data/states';
+import { getSession } from 'next-auth/react';
 
-function Profile() {
-  const institutes = [
-    {
-      id: 1,
-      name: 'NIT Agartala',
-    },
-    {
-      id: 2,
-      name: 'NIT Allahabad',
-    },
-    {
-      id: 3,
-      name: 'NIT Bhopal',
-    },
-    {
-      id: 4,
-      name: 'NIT Calicut',
-    },
-    {
-      id: 5,
-      name: 'NIT Jamshedpur',
-    },
-    {
-      id: 6,
-      name: 'NIT Karnataka',
-    },
-    {
-      id: 7,
-      name: 'NIT Kurukshetra',
-    },
-    {
-      id: 8,
-      name: 'NIT Patna',
-    },
-    {
-      id: 9,
-      name: 'NIT Raipur',
-    },
-    {
-      id: 10,
-      name: 'NIT Tiruchirappalli',
-    },
-    {
-      id: 11,
-      name: 'NIT Warangal',
-    },
-  ];
+function Profile({ profile, institutes }) {
+  const states = getStates();
+
+  const contactRef = useRef(null);
+  const genderRef = useRef(null);
+  const dobRef = useRef(null);
+  const stateRef = useRef(null);
+  const linkedInRef = useRef(null);
+  const githubRef = useRef(null);
+  const addressRef = useRef(null);
+  const instituteRef = useRef(null);
+  const iEmailRef = useRef(null);
+  const degreeRef = useRef(null);
+  const semesterRef = useRef(null);
+  const registerRef = useRef(null);
+
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    const profileData = {
+      contact: contactRef.current.value,
+      gender: genderRef.current.value,
+      dob: dobRef.current.value,
+      state: stateRef.current.value,
+      linkedIn: linkedInRef.current.value,
+      github: githubRef.current.value,
+      address: addressRef.current.value,
+      institute: instituteRef.current.value,
+      iEmail: iEmailRef.current.value,
+      degree: degreeRef.current.value,
+      semester: semesterRef.current.value,
+      registerNumber: registerRef.current.value,
+    };
+    const session = await getSession();
+    console.log(session);
+    const response = await fetch(`/api/profile/${session.user.name._id}`, {
+      method: 'POST',
+      body: JSON.stringify(profileData),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+  };
 
   return (
-    <div className="p-3 rounded-lg">
+    <form onSubmit={submitHandler} className="p-3 rounded-lg">
       <div className="bg-white h-96 sm:h-[75vh] overflow-scroll shadow-2xl sm:w-[96%] mx-auto grid grid-cols-1 gap-2 divide-indigo-700 divide-y-4 md:divide-y-0 md:divide-x-4 md:grid-cols-2 p-3 text-gray-900 rounded-lg">
         <div className="flex flex-col pl-1 pt-1 pb-1">
           <h1 className="font-montserrat">Personal Information</h1>
@@ -66,6 +63,8 @@ function Profile() {
                   type="text"
                   name="first_name"
                   id="first_name"
+                  disabled
+                  defaultValue={profile?.first_name}
                 />
               </div>
             </div>
@@ -80,6 +79,8 @@ function Profile() {
                   type="text"
                   name="last_name"
                   id="last_name"
+                  disabled
+                  defaultValue={profile?.last_name}
                 />
               </div>
             </div>
@@ -94,9 +95,14 @@ function Profile() {
                 </h6>
                 <input
                   className="w-full placeholder:hidden border-0 focus-visible:bg-indigo-500 text-white text-sm font-bold focus-within:bg-indigo-500 outline-none bg-indigo-500"
-                  type="text"
+                  type="tel"
+                  minLength="10"
+                  maxLength="10"
                   name="phone"
                   id="phone"
+                  defaultValue={profile?.contact}
+                  required
+                  ref={contactRef}
                 />
               </div>
             </div>
@@ -110,11 +116,16 @@ function Profile() {
                   name="gender"
                   id="gender"
                   className="w-full placeholder:hidden border-0 focus-visible:bg-indigo-500 text-white text-sm font-bold focus-within:bg-indigo-500 outline-none bg-indigo-500"
+                  defaultValue={profile?.gender}
+                  required
+                  ref={genderRef}
                 >
-                  <option value="">Select Gender</option>
-                  <option value="">Male</option>
-                  <option value="">Female</option>
-                  <option value="">Prefer not to say.</option>
+                  <option value="" disabled>
+                    Select Gender
+                  </option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Prefer not to say">Prefer not to say</option>
                 </select>
               </div>
             </div>
@@ -132,6 +143,9 @@ function Profile() {
                   type="date"
                   name="date_of_birth"
                   id="date_of_birth"
+                  defaultValue={profile?.dob}
+                  required
+                  ref={dobRef}
                 />
               </div>
             </div>
@@ -145,11 +159,20 @@ function Profile() {
                   name="state"
                   id="state"
                   className="w-full placeholder:hidden border-0 focus-visible:bg-indigo-500 text-white text-sm font-bold focus-within:bg-indigo-500 outline-none bg-indigo-500"
+                  defaultValue={profile?.state}
+                  required
+                  ref={stateRef}
                 >
                   <option value="">Select State</option>
-                  <option value="">Gujarat</option>
-                  <option value="">Karnataka</option>
-                  <option value="">Tamil Nadu</option>
+                  {states.map((state) => (
+                    <option
+                      value={state.name}
+                      className="bg-white text-indigo-600"
+                      key={state.id}
+                    >
+                      {state.name}
+                    </option>
+                  ))}
                 </select>
               </div>
             </div>
@@ -167,6 +190,9 @@ function Profile() {
                   type="url"
                   name="linkedin"
                   id="linkedin"
+                  defaultValue={profile?.linkedIn}
+                  required
+                  ref={linkedInRef}
                 />
               </div>
             </div>
@@ -181,6 +207,9 @@ function Profile() {
                   type="url"
                   name="github"
                   id="github"
+                  defaultValue={profile?.github}
+                  required
+                  ref={githubRef}
                 />
               </div>
             </div>
@@ -197,6 +226,8 @@ function Profile() {
                 type="email"
                 name="email"
                 id="email"
+                disabled
+                defaultValue={profile?.email}
               />
             </div>
           </div>
@@ -212,6 +243,9 @@ function Profile() {
                 type="text"
                 name="address"
                 id="address"
+                defaultValue={profile?.address}
+                required
+                ref={addressRef}
               />
             </div>
           </div>
@@ -230,8 +264,11 @@ function Profile() {
                 name="institute"
                 id="institute_filter"
                 className="w-full placeholder:hidden border-0 focus-visible:bg-indigo-500 text-white text-sm font-bold focus-within:bg-indigo-500 outline-none bg-indigo-500"
+                defaultValue={profile.institute}
+                required
+                ref={instituteRef}
               >
-                <option className="bg-white text-indigo-600">
+                <option value="" disabled className="bg-white text-indigo-600">
                   Select Institute
                 </option>
                 {institutes.map((institute) => (
@@ -258,6 +295,9 @@ function Profile() {
                 type="email"
                 name="institute_email"
                 id="institute_email"
+                defaultValue={profile?.iEmail}
+                required
+                ref={iEmailRef}
               />
             </div>
           </div>
@@ -273,6 +313,9 @@ function Profile() {
                 type="text"
                 name="degree"
                 id="degree"
+                defaultValue={profile?.degree}
+                required
+                ref={degreeRef}
               />
             </div>
           </div>
@@ -290,6 +333,9 @@ function Profile() {
                   min="1"
                   name="semester"
                   id="semester"
+                  defaultValue={profile?.semester}
+                  required
+                  ref={semesterRef}
                 />
               </div>
             </div>
@@ -301,9 +347,12 @@ function Profile() {
                 </h6>
                 <input
                   className="w-full placeholder:hidden border-0 focus-visible:bg-indigo-500 text-white text-sm font-bold focus-within:bg-indigo-500 outline-none bg-indigo-500"
-                  type="url"
-                  name="github"
-                  id="github"
+                  type="text"
+                  name="roll"
+                  id="roll"
+                  defaultValue={profile?.registerNumber}
+                  required
+                  ref={registerRef}
                 />
               </div>
             </div>
@@ -315,7 +364,7 @@ function Profile() {
           Save
         </button>
       </div>
-    </div>
+    </form>
   );
 }
 

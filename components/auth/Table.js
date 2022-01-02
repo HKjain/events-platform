@@ -1,5 +1,6 @@
 import React from 'react';
 import TableRow from './TableRow';
+import Loader from '../ui/Loader';
 
 function Table({ tableDetails, showInstitute, loading = false }) {
   const { headings, data } = tableDetails;
@@ -8,9 +9,7 @@ function Table({ tableDetails, showInstitute, loading = false }) {
     return (
       <div className="bg-white">
         <div className="w-full h-96 flex justify-center items-center">
-          <h1 className="font-montserrat text-indigo-800 tracking-wider">
-            Loading...
-          </h1>
+          <Loader />
         </div>
       </div>
     );

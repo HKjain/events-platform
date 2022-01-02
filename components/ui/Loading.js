@@ -1,9 +1,10 @@
 import React from 'react';
+import Loader from './Loader';
 
 function Loading() {
   return (
     <div className="w-full h-[80vh] flex justify-center items-center">
-      <h1>Loading...</h1>
+      <Loader />
     </div>
   );
 }
