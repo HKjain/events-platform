@@ -1,24 +1,45 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
+import { useSession, signOut } from 'next-auth/react';
 import Link from 'next/link';
 
 import MenuIcon from '../icons/MenuIcon';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import LogoutIcon from '@mui/icons-material/Logout';
 import NavbarLink from '../ui/NavbarLink';
 
 function Navbar() {
+  const { data: session } = useSession();
+  const router = useRouter();
   const [toggle, setToggle] = useState('hidden');
-  const handleDropdown = () => {
-    setToggle(toggle === 'hidden' ? 'block' : 'hidden');
-  };
-
-  const links = [
+  const base = [
     { id: 1, url: '/', title: 'Home' },
     { id: 2, url: '/events', title: 'Events' },
     { id: 4, url: '/contact', title: 'Contact' },
-    { id: 3, url: '/auth/public', title: 'Dashboard' },
-    { id: 5, url: '/auth/institute', title: 'Institute' },
-    { id: 6, url: '/auth/admin/dashboard', title: 'Admin' },
   ];
+  const [links, setLinks] = useState(base);
+  const handleDropdown = () => {
+    setToggle(toggle === 'hidden' ? 'block' : 'hidden');
+  };
+  const logoutHandler = async () => {
+    const data = await signOut({
+      redirect: false,
+      callbackUrl: `${window.location.origin}/auth`,
+    });
+    setLinks(base);
+    router.replace(data.url);
+  };
+
+  useEffect(() => {
+    if (session?.user?.name?.is_student) {
+      setLinks([...base, { id: 3, url: '/auth/public', title: 'Dashboard' }]);
+    } else if (session?.user?.name?.is_institute) {
+      setLinks([
+        ...base,
+        { id: 5, url: '/auth/institute', title: 'Institute' },
+      ]);
+    }
+  }, [session]);
 
   return (
     <>
@@ -47,21 +68,34 @@ function Navbar() {
               className={`${toggle} p-2  z-50 absolute transition-all ease-in-out shadow flex-col mt-16 w-1/2 bg-white rounded-box`}
             >
               <div className="flex justify-start pl-1 btn-md w-full rounded-btn">
-                <Link href="/auth" className="btn btn-circle btn-ghost">
-                  <a>
-                    <AccountCircleIcon
-                      key="circle_1"
+                {!session?.user && (
+                  <Link href="/auth" className="btn btn-circle btn-ghost">
+                    <a>
+                      <AccountCircleIcon
+                        key="circle_1"
+                        sx={{ fontSize: '2.2rem' }}
+                        className="text-indigo-700"
+                      />
+                    </a>
+                  </Link>
+                )}
+                {session?.user && (
+                  <button
+                    onClick={logoutHandler}
+                    className="btn btn-circle hover:bg-transparent btn-ghost"
+                  >
+                    <LogoutIcon
+                      key="circle_2"
                       sx={{ fontSize: '2.2rem' }}
                       className="text-indigo-700"
                     />
-                  </a>
-                </Link>
+                  </button>
+                )}
               </div>
 
               {links.map((item) => (
-                <div>
+                <div key={item.id}>
                   <NavbarLink
-                    key={item.id}
                     url={item.url}
                     title={item.title}
                     className="btn text-indigo-700 hover:text-white hover:bg-indigo-600 bg-transparent border-0 flex justify-start btn-md w-full font-bold rounded-btn"
@@ -78,15 +112,29 @@ function Navbar() {
           </div>
         </div>
         <div className="hidden md:flex navbar-end">
-          <Link href="/auth" className="btn btn-circle btn-ghost">
-            <a>
-              <AccountCircleIcon
+          {!session?.user && (
+            <Link href="/auth" className="btn btn-circle btn-ghost">
+              <a>
+                <AccountCircleIcon
+                  key="circle_2"
+                  sx={{ fontSize: '2.2rem' }}
+                  className="text-indigo-700"
+                />
+              </a>
+            </Link>
+          )}
+          {session?.user && (
+            <button
+              onClick={logoutHandler}
+              className="btn btn-circle hover:bg-transparent btn-ghost"
+            >
+              <LogoutIcon
                 key="circle_2"
                 sx={{ fontSize: '2.2rem' }}
                 className="text-indigo-700"
               />
-            </a>
-          </Link>
+            </button>
+          )}
         </div>
       </nav>
     </>

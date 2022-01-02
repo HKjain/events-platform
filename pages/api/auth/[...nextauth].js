@@ -1,17 +1,21 @@
 import NextAuth from 'next-auth';
-import Providers from 'next-auth/providers';
+import CredentialsProvider from 'next-auth/providers/credentials';
 
-import { connectToDatabase } from '../../../util/db';
+import { connectToDatabase, promise } from '../../../util/mongodb';
 import { verifyPassword } from '../../../util/auth';
 
 export default NextAuth({
   session: {
     jwt: true,
+    strategy: 'jwt',
   },
+  secret: process.env.SECRET,
   providers: [
-    Providers.Credentials({
+    CredentialsProvider({
       async authorize(credentials) {
         const { db } = await connectToDatabase();
+
+        if (!db) throw new Error('Database Connection Failed!');
 
         const usersCollection = db.collection('users');
 
@@ -20,7 +24,6 @@ export default NextAuth({
         });
 
         if (!user) {
-          client.close();
           throw new Error('User not exists!');
         }
 
@@ -29,12 +32,15 @@ export default NextAuth({
           user.password
         );
         if (!isValid) {
-          client.close();
-          throw new Error('Invalid Password');
+          throw new Error('Invalid Password!');
         }
 
-        client.close();
-        return { usre: user };
+        let sendingData = {
+          ...user,
+        };
+        delete sendingData.password;
+
+        return { name: sendingData };
       },
     }),
   ],
