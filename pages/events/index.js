@@ -1,13 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Head from 'next/head';
+import { connectToDatabase } from '../../util/mongodb';
 
 import Filter from '../../components/events/Filter';
 import EventCard from '../../components/ui/EventCard';
 
-import { getOngoingEvents } from '../../data/events';
-
-function Events() {
-  const events = getOngoingEvents();
+function Events({ allEvents, institutes }) {
+  const [events, setEvents] = useState(allEvents);
 
   return (
     <>
@@ -18,7 +17,7 @@ function Events() {
       <div className="flex flex-col px-3 mb-3 gap-2 md:flex-row w-full">
         {/* Filter */}
         <div className="md:w-1/4 z-10 p-2 rounded-xl sticky top-16 md:top-20 h-fit min-w-fit max-w-full bg-white">
-          <Filter />
+          <Filter institutes={institutes} />
         </div>
 
         {/* List of Events */}
@@ -33,6 +32,34 @@ function Events() {
       </div>
     </>
   );
+}
+
+export async function getStaticProps() {
+  const { db } = await connectToDatabase();
+  const events = await db.collection('events').find().toArray();
+  let eve = [];
+  for (let i = 0; i < events.length; i++) {
+    let ev = { ...events[i] };
+    delete ev._id;
+    ev._id = events[i]._id.toString();
+    eve.push(ev);
+  }
+
+  const response = await fetch(`${process.env.base_url}/api/institutes`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  const data = await response.json();
+  const institutes = data.institutes;
+
+  return {
+    props: {
+      allEvents: eve,
+      institutes,
+    },
+  };
 }
 
 export default Events;

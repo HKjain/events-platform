@@ -1,20 +1,30 @@
 import React from 'react';
-import { getAllEvents, getEventById } from '../../data/events';
+import Head from 'next/head';
+import { connectToDatabase } from '../../util/mongodb';
+import { ObjectId } from 'mongodb';
 
 import EventDetails from '../../components/events/EventDetails';
 
 export default function EventDetail({ event }) {
   return (
     <div>
+      <Head>
+        <title>{event.eventName}</title>
+      </Head>
       <EventDetails event={event} />
     </div>
   );
 }
 
 export async function getStaticPaths() {
-  const allEvents = getAllEvents();
+  const { db } = await connectToDatabase();
+  const eventsList = await db.collection('events').find().toArray();
+  let eventIds = [];
+  for (let i = 0; i < eventsList.length; i++) {
+    eventIds.push({ eventId: eventsList[i]._id.toString() });
+  }
 
-  const paths = allEvents.map((event) => ({
+  const paths = eventIds.map((event) => ({
     params: { eventId: event.eventId },
   }));
   return {
@@ -26,13 +36,32 @@ export async function getStaticPaths() {
 export async function getStaticProps(context) {
   const eventId = context.params.eventId;
 
-  const event = getEventById(eventId);
+  const { db } = await connectToDatabase();
 
-  if (!event) {
+  let convertedId;
+  try {
+    convertedId = ObjectId(eventId);
+  } catch (e) {
     return {
       notFound: true,
     };
   }
+
+  const fetchedEvent = await db
+    .collection('events')
+    .findOne({ _id: convertedId });
+
+  if (!fetchedEvent) {
+    return {
+      notFound: true,
+    };
+  }
+
+  let event = {
+    ...fetchedEvent,
+  };
+  delete event._id;
+  event._id = fetchedEvent._id.toString();
 
   return {
     props: {

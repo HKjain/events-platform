@@ -6,7 +6,36 @@ import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
 import SchoolIcon from '@mui/icons-material/School';
 import DevicesIcon from '@mui/icons-material/Devices';
 
+const month = [
+  'Jan',
+  'Feb',
+  'March',
+  'Apr',
+  'May',
+  'June',
+  'July',
+  'Aug',
+  'Sept',
+  'Oct',
+  'Nov',
+  'Dec',
+];
+
 function EventDetails({ event }) {
+  const startDate = new Date(event.startDate);
+  const readableStart =
+    startDate.getDate().toString() +
+    ' ' +
+    month[startDate.getMonth()] +
+    ' ' +
+    startDate.getFullYear().toString();
+  const endDate = new Date(event.endDate);
+  const readableEnd =
+    endDate.getDate().toString() +
+    ' ' +
+    month[endDate.getMonth()] +
+    ' ' +
+    endDate.getFullYear().toString();
   return (
     <div>
       <main className="py-6 px-4 sm:p-6 md:py-10 md:px-8">
@@ -45,8 +74,8 @@ function EventDetails({ event }) {
               <dd className="text-indigo-600 gap-1 flex items-center ">
                 <EventIcon />
                 <span>
-                  <span>{event.startDate}</span> &nbsp; to &nbsp;
-                  <span>{event.endDate}</span>
+                  <span>{readableStart}</span> &nbsp; to &nbsp;
+                  <span>{readableEnd}</span>
                 </span>
               </dd>
 
