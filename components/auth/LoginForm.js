@@ -47,7 +47,7 @@ function LoginForm() {
       const next = s?.user?.name?.is_student
         ? '/auth/public'
         : '/auth/institute';
-      router.replace(next);
+      router.push(next);
     }
   };
 

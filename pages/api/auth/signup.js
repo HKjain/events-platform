@@ -25,11 +25,11 @@ async function handler(req, res) {
       last_name,
       is_student,
       is_institute,
-      institute_id,
+      institute_name,
     } = req.body;
 
     if (
-      (is_institute && !institute_id) ||
+      (is_institute && !institute_name) ||
       (is_student && (!first_name || !last_name)) ||
       !email ||
       !email.includes('@') ||
@@ -70,7 +70,7 @@ async function handler(req, res) {
       user.last_name = last_name;
     }
     if (is_institute) {
-      user.institute_id = institute_id;
+      user.institute_name = institute_name;
     }
     const result = await db.collection('users').insertOne(user);
 

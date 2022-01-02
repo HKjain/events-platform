@@ -1,6 +1,29 @@
-import React from 'react';
+import React, { useRef, useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
+import Loading from '../../../components/ui/Loading';
 
 function AdminLogin() {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(true);
+  const emailRef = useRef(null);
+  const passwordRef = useRef(null);
+  const handleAdminLogin = () => {
+    const email = emailRef.current.value;
+    const password = passwordRef.current.value;
+    if (email === 'harshkawadia8.hk@gmail.com' && password === 'hkjain123') {
+      localStorage.setItem('isAdmin', true);
+      router.replace('/auth/admin/dashboard');
+    }
+  };
+
+  useEffect(() => {
+    const check = localStorage.getItem('isAdmin');
+    if (check) router.replace('/auth/admin/dashboard');
+    else setIsLoading(false);
+  }, [router]);
+
+  if (isLoading) return <Loading />;
+
   return (
     <div>
       <div className="w-[85%] mx-auto mt-5">
@@ -10,15 +33,16 @@ function AdminLogin() {
         <div className="mb-4">
           <label
             className="block text-grey-darker text-sm font-bold mb-2"
-            for="username"
+            for="email"
           >
-            Username
+            Email Address
           </label>
           <input
             className="shadow appearance-none border rounded w-full py-2 px-3 text-grey-darker"
-            id="username"
-            type="text"
-            placeholder="Username"
+            id="email"
+            type="email"
+            placeholder="Email address"
+            ref={emailRef}
           />
         </div>
         <div className="mb-6">
@@ -33,13 +57,15 @@ function AdminLogin() {
             id="password"
             type="password"
             placeholder="*********"
+            ref={passwordRef}
+            minLength="6"
           />
-          <p className="text-red text-xs italic">Please choose a password.</p>
         </div>
         <div className="flex items-center justify-between">
           <button
             className="bg-indigo-600 hover:scale-95 transition-all ease-in duration-100 text-white tracking-wider font-bold py-2 px-4 rounded"
             type="button"
+            onClick={handleAdminLogin}
           >
             Sign In
           </button>

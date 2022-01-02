@@ -1,82 +1,29 @@
-import React, { useState } from 'react';
-import Head from 'next/head';
+import React, { useEffect, useState } from 'react';
+import { getSession } from 'next-auth/react';
+import { useRouter } from 'next/router';
 
-import BackgroundSVG from '../../components/auth/BackgroundSVG';
-import LoginForm from '../../components/auth/LoginForm';
-import RegisterForm from '../../components/auth/RegisterForm';
+import Loading from '../../components/ui/Loading';
+import AuthWrapper from '../../components/auth/AuthWrapper';
 
 function AuthPage() {
-  const [formToggle, setFormToggle] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
+  const router = useRouter();
 
-  const handleToggle = () => {
-    setFormToggle(!formToggle);
-  };
+  useEffect(() => {
+    getSession().then((session) => {
+      if (session) {
+        router.replace('/');
+      } else if (localStorage.getItem('isAdmin'))
+        router.replace('/auth/admin/dashboard');
+      else {
+        setIsLoading(false);
+      }
+    });
+  }, [router]);
 
-  return (
-    <div
-      className="bg-indigo-600"
-      style={{
-        minHeight: '100vh',
-        height: '100%',
-        position: 'relative',
-      }}
-    >
-      <Head>
-        <title>SignIn / SignUp</title>
-      </Head>
-      <BackgroundSVG />
-      <div className="flex mt-4 justify-center items-center sm:justify-start w-full">
-        <div className="flex flex-col pt-28 sm:pl-8 items-start w-[28rem] ">
-          <div className="ml-4">
-            <h1 className="text-white font-nunito font-semibold text-sm mt-1">
-              Welcome{' '}
-              <span className="text-cyan-500">
-                {' '}
-                <b>!</b>
-              </span>
-              {', '}
-              Nice to see you here.
-            </h1>
-            {formToggle && (
-              <>
-                <h1 className="text-white font-nunito my-3 font-bold text-xl">
-                  Sign In
-                </h1>
-                <h1 className="text-white font-nunito font-semibold text-xs">
-                  Want to join us?{' '}
-                  <span
-                    onClick={handleToggle}
-                    className="text-cyan-300 cursor-pointer"
-                  >
-                    Sign Up
-                  </span>
-                </h1>
-              </>
-            )}
-            {!formToggle && (
-              <>
-                <h1 className="text-white font-nunito my-3 font-bold text-xl">
-                  Create new account<span className="text-cyan-300"> .</span>
-                </h1>
-                <h1 className="text-white font-nunito font-semibold text-xs">
-                  Already a member?{' '}
-                  <span
-                    onClick={handleToggle}
-                    className="text-cyan-300 cursor-pointer"
-                  >
-                    Sign In
-                  </span>
-                </h1>
-              </>
-            )}
-          </div>
+  if (isLoading) return <Loading />;
 
-          {formToggle && <LoginForm />}
-          {!formToggle && <RegisterForm />}
-        </div>
-      </div>
-    </div>
-  );
+  return <AuthWrapper />;
 }
 
 export default AuthPage;

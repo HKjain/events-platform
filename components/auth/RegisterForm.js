@@ -67,7 +67,7 @@ function RegisterForm() {
       form_data.is_student = true;
       form_data.is_institute = false;
     } else {
-      form_data.institute_id = instituteRef.current.value;
+      form_data.institute_name = instituteRef.current.value;
       form_data.is_student = false;
       form_data.is_institute = true;
     }
@@ -145,7 +145,7 @@ function RegisterForm() {
                 {institutes.map((institute) => (
                   <option
                     className="bg-white text-indigo-600"
-                    value={institute.id}
+                    value={institute.name}
                     key={institute.id}
                   >
                     {institute.name}

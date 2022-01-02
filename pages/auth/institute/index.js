@@ -1,5 +1,6 @@
 import React from 'react';
 import Head from 'next/head';
+import { getSession } from 'next-auth/react';
 
 import AddEvent from '../../../components/auth/institute/AddEvent';
 import ListedEvents from '../../../components/auth/institute/ListedEvents';
@@ -28,11 +29,28 @@ function InstituteHome() {
   return (
     <div>
       <Head>
-        <title>Welcome!, {username}</title>
+        <title>Welcome!</title>
       </Head>
       <Dashboard menuItems={menuItems} />
     </div>
   );
+}
+
+export async function getServerSideProps(context) {
+  const session = await getSession({ req: context.req });
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/auth',
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: { session },
+  };
 }
 
 export default InstituteHome;
