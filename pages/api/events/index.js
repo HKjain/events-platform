@@ -1,4 +1,4 @@
-import { connectToDatabase } from '../../util/mongodb';
+import { connectToDatabase } from '../../../util/mongodb';
 
 async function handler(req, res) {
   if (req.method === 'POST') {
@@ -28,7 +28,7 @@ async function handler(req, res) {
         .collection('users_events')
         .insertOne(NewCombination);
     }
-    res.json({ message: 'Came Here' });
+    res.json({ message: 'Event Added!' });
   }
 }
 export default handler;

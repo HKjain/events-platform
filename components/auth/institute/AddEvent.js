@@ -41,17 +41,18 @@ function AddEvent() {
       minSem: minSemRef.current.value,
       modeOfConduct: modeOfConductRef.current.value,
       description: descriptionRef.current.value,
+      isActive: false,
     };
     const session = await getSession();
     data.institute_name = session.user.name.institute_name;
     data.user_id = session.user.name._id;
 
     const response = await registerEvent(data);
-    console.log(response);
+    document.getElementById('eventAdd').reset();
   };
 
   return (
-    <form className="p-3 rounded-lg" onSubmit={handleSubmit}>
+    <form id="eventAdd" className="p-3 rounded-lg" onSubmit={handleSubmit}>
       <div className="bg-white h-96 sm:h-[75vh] overflow-scroll shadow-2xl sm:w-[96%] mx-auto grid grid-cols-1 gap-2 divide-indigo-700 divide-y-4 md:divide-y-0 md:divide-x-4 md:grid-cols-2 p-3 text-gray-900 rounded-lg">
         <div className="flex flex-col pl-1 pt-1 pb-1">
           <h1 className="font-montserrat">Host Details</h1>
@@ -85,6 +86,8 @@ function AddEvent() {
                   type="tel"
                   name="phone"
                   id="phone"
+                  maxLength="10"
+                  minLength="10"
                   ref={contactRef}
                   required
                 />
