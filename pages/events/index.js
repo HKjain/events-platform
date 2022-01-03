@@ -1,11 +1,88 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import Head from 'next/head';
 
 import Filter from '../../components/events/Filter';
 import EventCard from '../../components/ui/EventCard';
 
 function Events({ allEvents, institutes }) {
+  const [aEvents, setAEvents] = useState(allEvents);
   const [events, setEvents] = useState(allEvents);
+
+  const instituteRef = useRef(null);
+  const startRef = useRef(null);
+  const endRef = useRef(null);
+
+  const clearForm = (e) => {
+    e.preventDefault();
+    document.getElementById('filter').reset();
+    setEvents(aEvents);
+  };
+
+  const onChangeInstitute = () => {
+    let newEvents = [];
+    if (startRef.current.value.length > 0 || endRef.current.value.length > 0) {
+      newEvents = events.filter(
+        (event) => event.institute_name === instituteRef.current.value
+      );
+    } else {
+      newEvents = aEvents.filter(
+        (event) => event.institute_name === instituteRef.current.value
+      );
+    }
+
+    setEvents(newEvents);
+  };
+
+  const handleBothDates = () => {
+    const startDate = new Date(startRef.current.value).valueOf();
+    const endDate = new Date(endRef.current.value).valueOf();
+
+    function call(event) {
+      const a = new Date(event.startDate);
+      const b = new Date(event.endDate);
+      return a.valueOf() >= startDate && endDate >= b.valueOf();
+    }
+    let newEvents = [];
+    if (instituteRef.current.value.length > 0) newEvents = events.filter(call);
+    else newEvents = aEvents.filter(call);
+    setEvents(newEvents);
+  };
+
+  const onChangeStart = () => {
+    if (!endRef.current || !(endRef.current.value === '')) {
+      handleBothDates();
+    } else {
+      const startDate = new Date(startRef.current.value).valueOf();
+
+      function call(event) {
+        return new Date(event.startDate).valueOf() >= startDate;
+      }
+
+      let newEvents = [];
+      if (instituteRef.current.value.length > 0)
+        newEvents = events.filter(call);
+      else newEvents = aEvents.filter(call);
+      setEvents(newEvents);
+    }
+  };
+
+  const onChangeEnd = () => {
+    if (!startRef.current || !(startRef.current.value === '')) {
+      handleBothDates();
+    } else {
+      const endDate = new Date(endRef.current.value).valueOf();
+
+      function call(event) {
+        return new Date(event.endDate).valueOf() <= endDate;
+      }
+
+      let newEvents = [];
+      if (instituteRef.current.value.length > 0)
+        newEvents = events.filter(call);
+      else newEvents = aEvents.filter(call);
+      setEvents(newEvents);
+    }
+  };
 
   return (
     <>
@@ -16,7 +93,16 @@ function Events({ allEvents, institutes }) {
       <div className="flex flex-col px-3 mb-3 gap-2 md:flex-row w-full">
         {/* Filter */}
         <div className="md:w-1/4 z-10 p-2 rounded-xl sticky top-16 md:top-20 h-fit min-w-fit max-w-full bg-white">
-          <Filter institutes={institutes} />
+          <Filter
+            onChangeStart={onChangeStart}
+            onChangeEnd={onChangeEnd}
+            onChangeInstitute={onChangeInstitute}
+            instituteRef={instituteRef}
+            institutes={institutes}
+            clearForm={clearForm}
+            startRef={startRef}
+            endRef={endRef}
+          />
         </div>
 
         {/* List of Events */}
@@ -27,6 +113,11 @@ function Events({ allEvents, institutes }) {
               <EventCard key={event._id} event={event} />
             ))}
           </div>
+          {events?.length === 0 && (
+            <h1 className="flex justify-center font-montserrat text-indigo-600 tracking-wider items-center">
+              No Events to show...
+            </h1>
+          )}
         </div>
       </div>
     </>

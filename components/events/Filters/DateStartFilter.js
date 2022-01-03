@@ -1,6 +1,6 @@
 import React from 'react';
 
-function DateFilter({ type }) {
+function DateStartFilter({ type, startRef, onChangeStart }) {
   return (
     <>
       <div
@@ -12,10 +12,12 @@ function DateFilter({ type }) {
           type="date"
           id={`date_selector_${type}`}
           name={`${type}`}
+          ref={startRef}
+          onChange={onChangeStart}
         />
       </div>
     </>
   );
 }
 
-export default DateFilter;
+export default DateStartFilter;
