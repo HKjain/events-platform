@@ -9,7 +9,6 @@ import RegisteredStudents from '../../../components/auth/institute/RegisteredStu
 import Dashboard from '../../../components/auth/Dashboard';
 
 function InstituteHome() {
-  const username = 'Harsh Kawadia';
   const menuItems = [
     { id: 1, name: 'Add Event', slug: 'add_event', component: <AddEvent /> },
     {

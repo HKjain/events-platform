@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 
 function Hero() {
   return (
@@ -10,9 +11,11 @@ function Hero() {
         <h2 className="text-sm sm:text-md mt-4 mb-1 font-montserrat">
           Want to list an event ?
         </h2>
-        <button className="btn btn-sm transition-all ease-in-out duration-500 hover:shadow-xl text-xs hover:scale-95 sm:text-md sm:btn-md bg-indigo-500 hover:bg-indigo-400 border-0">
-          List an Event
-        </button>
+        <Link href="/auth">
+          <a className="btn btn-sm transition-all ease-in-out duration-500 hover:shadow-xl text-xs hover:scale-95 sm:text-md sm:btn-md bg-indigo-500 hover:bg-indigo-400 border-0">
+            List an Event
+          </a>
+        </Link>
       </div>
     </div>
   );

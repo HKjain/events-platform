@@ -6,7 +6,6 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
 import SchoolIcon from '@mui/icons-material/School';
 import DevicesIcon from '@mui/icons-material/Devices';
-import Notification from '../ui/Notification';
 
 const month = [
   'Jan',
@@ -28,6 +27,12 @@ function EventDetails({ event }) {
   const handleRegister = async () => {
     const eventId = event._id;
     const session = await getSession();
+
+    if (!session) {
+      setMessage('SignIn to Register in event!');
+      return;
+    }
+
     const userId = session.user.name._id;
 
     const user_data = {

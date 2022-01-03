@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 
 import events from '../../public/images/events.jpg';
 import Image from 'next/image';
@@ -24,9 +25,11 @@ function Card({ event }) {
             </span>
             <span>{event.institute_name}</span>
           </h2>
-          <button className="btn border-0 opacity-100 font-bold text-xs btn-sm mt-2 hover:bg-indigo-400 bg-indigo-500 text-white rounded-lg">
-            Know More &rarr;
-          </button>
+          <Link href={`/events/${event._id}`}>
+            <a className="btn border-0 opacity-100 font-bold text-xs btn-sm mt-2 hover:bg-indigo-400 bg-indigo-500 text-white rounded-lg">
+              Know More &rarr;
+            </a>
+          </Link>
         </div>
       </div>
     </>

@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { getSession } from 'next-auth/react';
 
 import { getStates } from '../../../data/states';
@@ -6,6 +6,7 @@ import { getStates } from '../../../data/states';
 function AddEvent() {
   const states = getStates();
 
+  const [message, setMessage] = useState();
   const emailRef = useRef(null);
   const contactRef = useRef(null);
   const stateRef = useRef(null);
@@ -48,11 +49,17 @@ function AddEvent() {
     data.user_id = session.user.name._id;
 
     const response = await registerEvent(data);
+    setMessage('Added Successfully!');
     document.getElementById('eventAdd').reset();
   };
 
   return (
     <form id="eventAdd" className="p-3 rounded-lg" onSubmit={handleSubmit}>
+      {message && (
+        <h1 className="bg-green-600 w-[50%] mx-auto p-2 rounded-lg text-center text-white font-bold tracking-wider mb-2">
+          {message}
+        </h1>
+      )}
       <div className="bg-white h-96 sm:h-[75vh] overflow-scroll shadow-2xl sm:w-[96%] mx-auto grid grid-cols-1 gap-2 divide-indigo-700 divide-y-4 md:divide-y-0 md:divide-x-4 md:grid-cols-2 p-3 text-gray-900 rounded-lg">
         <div className="flex flex-col pl-1 pt-1 pb-1">
           <h1 className="font-montserrat">Host Details</h1>
