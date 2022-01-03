@@ -5,12 +5,7 @@ import Carousel from '../components/layout/Carousel';
 import Social from '../components/layout/Social';
 import Newsletter from '../components/ui/Newsletter';
 
-import { getOngoingEvents, getUpcomingEvents } from '../data/events';
-
-export default function Home() {
-  const ongoingEvents = getOngoingEvents();
-  const upcomingEvents = getUpcomingEvents();
-
+export default function Home({ ongoingEvents, upcomingEvents }) {
   return (
     <>
       <Head>
@@ -41,4 +36,22 @@ export default function Home() {
       <Social />
     </>
   );
+}
+
+export async function getStaticProps() {
+  const resp = await fetch(`${process.env.base_url}/api/events`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  const d = await resp.json();
+  const ongoingEvents = d.onGoingEvents;
+  const upcomingEvents = d.upComingEvents;
+  return {
+    props: {
+      ongoingEvents,
+      upcomingEvents,
+    },
+  };
 }
