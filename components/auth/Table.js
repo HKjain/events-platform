@@ -1,9 +1,19 @@
 import React from 'react';
 import TableRow from './TableRow';
+import TableRowStudent from './TableRowStudent';
 import Loader from '../ui/Loader';
 
-function Table({ tableDetails, showInstitute, loading = false }) {
+function Table({
+  tableDetails,
+  showInstitute,
+  loading = false,
+  isStudent = false,
+}) {
   const { headings, data } = tableDetails;
+
+  const message = isStudent
+    ? 'No students registered Yet!'
+    : 'No Events listed Yet!';
 
   if (loading)
     return (
@@ -19,7 +29,7 @@ function Table({ tableDetails, showInstitute, loading = false }) {
       {!data && (
         <div className="w-full h-96 flex justify-center items-center">
           <h1 className="font-montserrat text-indigo-800 tracking-wider">
-            No Events listed Yet!
+            {message}
           </h1>
         </div>
       )}
@@ -33,16 +43,25 @@ function Table({ tableDetails, showInstitute, loading = false }) {
               ))}
             </tr>
           </thead>
-          <tbody>
-            {data.map((item, index) => (
-              <TableRow
-                key={index}
-                event={item}
-                index={index}
-                showInstitute={showInstitute}
-              />
-            ))}
-          </tbody>
+          {!isStudent && (
+            <tbody>
+              {data.map((item, index) => (
+                <TableRow
+                  key={index}
+                  event={item}
+                  index={index}
+                  showInstitute={showInstitute}
+                />
+              ))}
+            </tbody>
+          )}
+          {isStudent && (
+            <tbody>
+              {data.map((item, index) => (
+                <TableRowStudent key={index} student={item} index={index} />
+              ))}
+            </tbody>
+          )}
         </table>
       )}
     </div>

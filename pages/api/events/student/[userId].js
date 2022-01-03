@@ -13,18 +13,16 @@ async function handler(req, res) {
     for (let i = 0; i < findEvents.length; i++) {
       eventIds.push({ _id: ObjectId(findEvents[i].eventId) });
     }
+
+    if (eventIds.length === 0) {
+      res.json({ events: null });
+      return;
+    }
+
     const allevents = await db
       .collection('events')
       .find({ $or: eventIds })
       .toArray();
-
-    // let events = [];
-    // for (let i = 0; i < allevents.length; i++) {
-    //   let e = { ...allevents[i] };
-    //   delete e._id;
-    //   e._id = allevents[i]._id.toString();
-    //   events.push(e);
-    // }
 
     res.json({ events: allevents });
     return;

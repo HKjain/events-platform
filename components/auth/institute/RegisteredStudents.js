@@ -1,20 +1,48 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { getSession } from 'next-auth/react';
 
-import { getRegisteredStudents } from '../../../data/events';
-
-import TableRowStudent from '../TableRowStudent';
+import Table from '../Table';
 
 function RegisteredStudents() {
-  const headings = [
-    'First Name',
-    'Last Name',
-    'Email',
-    'Event Name',
-    'Institute',
-    'Registration Date',
-  ];
+  const [tableDetails, setTableDetails] = useState({});
+  const [loading, setLoading] = useState(true);
 
-  const data = getRegisteredStudents(2);
+  useEffect(() => {
+    async function getEvents() {
+      const session = await getSession();
+      const response = await fetch(
+        `/api/events/institute/s${session.user.name._id}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+      const data = await response.json();
+
+      if (data?.users) {
+        setTableDetails({
+          headings: [
+            'First Name',
+            'Last Name',
+            'Email',
+            'Event Name',
+            'Institute',
+            'Registration Date',
+          ],
+          data: data.users,
+        });
+      } else {
+        setTableDetails({
+          headings: null,
+          data: null,
+        });
+      }
+      setLoading(false);
+    }
+    getEvents();
+  }, []);
 
   return (
     <div className="p-3 rounded-lg">
@@ -22,23 +50,29 @@ function RegisteredStudents() {
         <h1 className=" sticky left-0 bg-white uppercase text-center text-gray-800 font-montserrat">
           Registered Students
         </h1>
-        <div className="bg-white">
+        <Table
+          isStudent={true}
+          tableDetails={tableDetails}
+          showInstitute={false}
+          loading={loading}
+        />
+        {/* <div className="bg-white">
           <table className="table bg-white w-full overflow-x-scroll">
             <thead className="sticky -top-3">
               <tr>
                 <th></th>
-                {headings.map((heading) => (
-                  <th>{heading}</th>
+                {tableDetails?.headings.map((heading, index) => (
+                  <th key={index}>{heading}</th>
                 ))}
               </tr>
             </thead>
             <tbody>
-              {data.map((student, index) => (
-                <TableRowStudent student={student} index={index} />
+              {tableDetails?.data.map((student, index) => (
+                <TableRowStudent key={index} student={student} index={index} />
               ))}
             </tbody>
           </table>
-        </div>
+        </div> */}
       </div>
     </div>
   );

@@ -11,7 +11,7 @@ function ListedEvents() {
     async function getEvents() {
       const session = await getSession();
       const response = await fetch(
-        `/api/events/institute/${session.user.name._id}`,
+        `/api/events/institute/e${session.user.name._id}`,
         {
           method: 'GET',
           headers: {

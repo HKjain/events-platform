@@ -30,9 +30,16 @@ function EventDetails({ event }) {
     const session = await getSession();
     const userId = session.user.name._id;
 
+    const user_data = {
+      first_name: session.user.name?.first_name,
+      last_name: session.user.name?.last_name,
+      institute_name: session.user.name?.institute,
+      iEmail: session.user.name?.iEmail,
+      eventName: event.eventName,
+    };
     const response = await fetch(`/api/events/${eventId}/${userId}`, {
       method: 'POST',
-      body: JSON.stringify({}),
+      body: JSON.stringify(user_data),
       headers: {
         'Content-Type': 'application/json',
       },

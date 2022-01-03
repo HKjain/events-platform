@@ -4,7 +4,9 @@ import { ObjectId } from 'mongodb';
 async function handler(req, res) {
   if (req.method === 'GET') {
     const { db } = await connectToDatabase();
-    const userId = req.query.userId;
+    let userId = req.query.userId;
+    const type = userId[0];
+    userId = userId.slice(1);
 
     const users_events = await db
       .collection('users_events')
@@ -17,20 +19,44 @@ async function handler(req, res) {
 
     var listOfEvents = users_events.event_ids;
     var findIds = [];
+    var findIdsE = [];
     for (let i = 0; i < listOfEvents.length; i++) {
       const eventId = listOfEvents[i];
       findIds.push({ _id: ObjectId(eventId) });
-      // const event = await db
-      //   .collection('events')
-      //   .findOne({ _id: ObjectId(eventId) });
-      // eventsDetails.push(event);
+      findIdsE.push({ eventId: eventId });
     }
-    const eventsDetails = await db
-      .collection('events')
-      .find({ $or: findIds })
-      .toArray();
 
-    res.json({ events: eventsDetails });
+    if (type === 'e') {
+      if (findIds.length === 0) {
+        res.json({ events: null });
+        return;
+      }
+
+      const eventsDetails = await db
+        .collection('events')
+        .find({ $or: findIds })
+        .toArray();
+      console.log('called above');
+      res.json({ events: eventsDetails });
+      return;
+    } else {
+      if (findIdsE.length === 0) {
+        res.json({ users: null });
+        return;
+      }
+      const usersList = await db
+        .collection('student_event')
+        .find({ $or: findIdsE })
+        .toArray();
+
+      if (usersList.length === 0) {
+        res.json({ users: null });
+        return;
+      }
+      console.log(usersList);
+      res.json({ users: usersList });
+      return;
+    }
   }
 }
 export default handler;

@@ -16,7 +16,7 @@ const month = [
 ];
 
 function TableRow({ student, index }) {
-  const registerDate = new Date(student.registration_date);
+  const registerDate = new Date(student.registrationDate);
 
   const readableDate =
     registerDate.getDate().toString() +
@@ -30,9 +30,9 @@ function TableRow({ student, index }) {
       <th>{index + 1}</th>
       <td>{student.first_name}</td>
       <td>{student.last_name}</td>
-      <td>{student.email}</td>
-      <td>{student.event_name}</td>
-      <td>{student.institute}</td>
+      <td>{student.iEmail}</td>
+      <td>{student.eventName}</td>
+      <td>{student.institute_name}</td>
       <td>{readableDate}</td>
     </tr>
   );
