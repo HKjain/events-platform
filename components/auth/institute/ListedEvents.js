@@ -10,12 +10,15 @@ function ListedEvents() {
   useEffect(() => {
     async function getEvents() {
       const session = await getSession();
-      const response = await fetch(`/api/events/${session.user.name._id}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+      const response = await fetch(
+        `/api/events/institute/${session.user.name._id}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
       const data = await response.json();
 
       if (data?.events) {

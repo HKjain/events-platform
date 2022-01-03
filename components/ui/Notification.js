@@ -4,7 +4,7 @@ function Notification({ status = '', message = '' }) {
   let color;
   if (status === 'success') color = 'bg-green-500';
   else if (status === 'fail') color = 'bg-red-500';
-
+  else color = 'bg-indigo-600';
   return (
     <div
       className={`flex rounded-lg mt-2 ml-3 items-center ${color} text-white text-sm font-bold px-2 py-2`}

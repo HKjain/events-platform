@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import Head from 'next/head';
-import { connectToDatabase } from '../../util/mongodb';
 
 import Filter from '../../components/events/Filter';
 import EventCard from '../../components/ui/EventCard';
@@ -25,7 +24,7 @@ function Events({ allEvents, institutes }) {
           {/* content */}
           <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {events.map((event) => (
-              <EventCard key={event.eventId} event={event} />
+              <EventCard key={event._id} event={event} />
             ))}
           </div>
         </div>
@@ -35,15 +34,14 @@ function Events({ allEvents, institutes }) {
 }
 
 export async function getStaticProps() {
-  const { db } = await connectToDatabase();
-  const events = await db.collection('events').find().toArray();
-  let eve = [];
-  for (let i = 0; i < events.length; i++) {
-    let ev = { ...events[i] };
-    delete ev._id;
-    ev._id = events[i]._id.toString();
-    eve.push(ev);
-  }
+  const resp = await fetch(`${process.env.base_url}/api/events`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  const d = await resp.json();
+  const events = d.events;
 
   const response = await fetch(`${process.env.base_url}/api/institutes`, {
     method: 'GET',
@@ -56,7 +54,7 @@ export async function getStaticProps() {
 
   return {
     props: {
-      allEvents: eve,
+      allEvents: events,
       institutes,
     },
   };

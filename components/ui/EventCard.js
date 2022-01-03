@@ -1,15 +1,12 @@
 import React from 'react';
 import Image from 'next/image';
-import { useRouter } from 'next/router';
+import Link from 'next/link';
 
 import ev from '../../public/images/events.jpg';
 import CollegeIcon from '../icons/CollegeIcon';
 
 function EventCard({ event }) {
-  const router = useRouter();
-  const handleKnowMore = (eventId) => {
-    router.push(`/events/${eventId}`);
-  };
+  const detailsUrl = `/events/${event._id}`;
 
   return (
     <div>
@@ -31,12 +28,11 @@ function EventCard({ event }) {
               <span>{event.institute_name}</span>
             </h2>
             {/* View Details */}
-            <button
-              onClick={() => handleKnowMore(event._id)}
-              className="active:focus:scale-90 duration-300 transition-all ease-in-out capitalize border-0 font-bold text-xs btn-sm mt-2 hover:bg-indigo-900 hover:text-white bg-white text-indigo-600 rounded-lg"
-            >
-              Know More &rarr;
-            </button>
+            <Link href={detailsUrl}>
+              <a className="active:focus:scale-90 justify-center flex items-center duration-300 transition-all ease-in-out capitalize border-0 font-bold text-xs btn-sm mt-2 hover:bg-indigo-900 hover:text-white bg-white text-indigo-600 rounded-lg">
+                Know More &rarr;
+              </a>
+            </Link>
           </div>
         </div>
       </div>

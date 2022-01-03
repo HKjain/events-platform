@@ -18,7 +18,7 @@ function AddEvent() {
   const descriptionRef = useRef(null);
 
   const registerEvent = async (data) => {
-    const response = await fetch('/api/events', {
+    const response = await fetch('/api/events/institute', {
       method: 'POST',
       body: JSON.stringify(data),
       headers: {

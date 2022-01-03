@@ -1,4 +1,4 @@
-import { connectToDatabase } from '../../../util/mongodb';
+import { connectToDatabase } from '../../../../util/mongodb';
 import { ObjectId } from 'mongodb';
 
 async function handler(req, res) {
@@ -16,14 +16,19 @@ async function handler(req, res) {
     }
 
     var listOfEvents = users_events.event_ids;
-    var eventsDetails = [];
+    var findIds = [];
     for (let i = 0; i < listOfEvents.length; i++) {
       const eventId = listOfEvents[i];
-      const event = await db
-        .collection('events')
-        .findOne({ _id: ObjectId(eventId) });
-      eventsDetails.push(event);
+      findIds.push({ _id: ObjectId(eventId) });
+      // const event = await db
+      //   .collection('events')
+      //   .findOne({ _id: ObjectId(eventId) });
+      // eventsDetails.push(event);
     }
+    const eventsDetails = await db
+      .collection('events')
+      .find({ $or: findIds })
+      .toArray();
 
     res.json({ events: eventsDetails });
   }

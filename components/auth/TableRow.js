@@ -59,7 +59,7 @@ function TableRow({ event, index, showInstitute }) {
     <tr key={event.eventId}>
       <th>{index + 1}</th>
       <td>{event.eventName}</td>
-      {showInstitute && <td>{event.institute}</td>}
+      {showInstitute && <td>{event.institute_name}</td>}
       <td>{readableStart}</td>
       <td>{readableEnd}</td>
       <td>

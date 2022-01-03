@@ -1,34 +1,17 @@
 import { connectToDatabase } from '../../../util/mongodb';
-
 async function handler(req, res) {
-  if (req.method === 'POST') {
-    const event = req.body;
-
+  if (req.method === 'GET') {
     const { db } = await connectToDatabase();
-    const newEvent = await db.collection('events').insertOne(event);
-
-    const newEventId = newEvent.insertedId.toString();
-    const combination = await db
-      .collection('users_events')
-      .findOne({ user_id: event.user_id });
-
-    if (combination) {
-      const up = await db
-        .collection('users_events')
-        .update(
-          { user_id: event.user_id },
-          { $push: { event_ids: newEventId } }
-        );
-    } else {
-      const NewCombination = {
-        user_id: event.user_id,
-        event_ids: [newEventId],
-      };
-      const newCombination = await db
-        .collection('users_events')
-        .insertOne(NewCombination);
+    const allEvents = await db.collection('events').find().toArray();
+    let events = [];
+    for (let i = 0; i < allEvents.length; i++) {
+      let ev = { ...allEvents[i] };
+      delete ev._id;
+      ev._id = allEvents[i]._id.toString();
+      events.push(ev);
     }
-    res.json({ message: 'Event Added!' });
+
+    res.json({ events: events });
   }
 }
 export default handler;
